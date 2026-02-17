@@ -2,6 +2,8 @@
 
 A **Vue 3 composable** for canvas-style drawing on an SVG. Built with Vue 3 and [d3](https://d3js.org/), inspired by [ng-whiteboard](https://github.com/mostafazke/ng-whiteboard).
 
+[**Live Demo**](https://metacurb.github.io/vue-whiteboard-composable/)
+
 No styles or UI. You provide the SVG element and optional options; the composable handles drawing, undo/redo, and export.
 
 **Features:**
@@ -13,7 +15,7 @@ No styles or UI. You provide the SVG element and optional options; the composabl
 - Export as PNG (base64)
 - **Serialization & Persistence** support
 
-![Example of useWhiteboard in action](./public/example.png)
+[![Example of useWhiteboard in action](./public/example.png)](https://metacurb.github.io/vue-whiteboard-composable/)
 
 ## Install
 
