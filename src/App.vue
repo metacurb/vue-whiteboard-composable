@@ -101,23 +101,6 @@
                 <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
               </svg>
             </button>
-            <button class="icon-btn danger" @click="clear" title="Clear Board">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M3 6h18" />
-                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-              </svg>
-            </button>
             <button class="icon-btn primary" @click="saveImage" title="Save Image">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -141,8 +124,32 @@
 
       <div class="history-panel">
         <div class="history-header">
-          <h3>History</h3>
-          <span class="badge">{{ history.length }}</span>
+          <div class="history-title-wrapper">
+            <h3>History</h3>
+            <span class="badge">{{ history.length }}</span>
+          </div>
+          <button
+            class="icon-btn sm danger"
+            @click="clear"
+            title="Clear Board"
+            :disabled="history.length === 0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 6h18" />
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+            </svg>
+          </button>
         </div>
         <div class="history-list">
           <div class="history-item" :class="{ active: currentIndex === -1 }" @click="jumpTo(-1)">
@@ -276,9 +283,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useWhiteboard } from './composables/useWhiteboard'
 import pkg from '../package.json'
+import defaultState from './default-state.json'
 
 const colors = [
   { name: 'Black', value: '#212121' },
@@ -301,6 +309,20 @@ const sizes = [
   { name: 'Extra Thick', value: '16px', previewSize: 18 },
 ]
 
+const STORAGE_KEY = 'vue-whiteboard-state'
+const getInitialState = () => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (!saved) return defaultState
+
+    const parsed = JSON.parse(saved)
+    return parsed?.length ? parsed : defaultState
+  } catch (e) {
+    console.error('Failed to load state', e)
+    return defaultState
+  }
+}
+
 const {
   undo,
   redo,
@@ -312,11 +334,21 @@ const {
   history,
   currentIndex,
   jumpTo,
+  serialize,
 } = useWhiteboard(svgRef, {
   color,
   size,
   lineStyles: { 'mix-blend-mode': 'normal' },
+  initialState: getInitialState(),
 })
+
+watch(
+  history,
+  () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(serialize()))
+  },
+  { deep: true },
+)
 
 const highlightRecord = (index: number) => {
   const record = history.value[index]
@@ -588,6 +620,18 @@ body {
   background-color: #111827;
   color: white;
   transform: translateY(-1px);
+}
+
+.icon-btn.sm {
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+}
+
+.history-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* History Panel */
