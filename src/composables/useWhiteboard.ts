@@ -11,7 +11,6 @@ import {
 
 export { type HistoryRecord, type SerializableRecord, type WhiteboardOptions }
 
-
 export function useWhiteboard(
   containerRef: Ref<SVGSVGElement | null>,
   options: WhiteboardOptions = {},

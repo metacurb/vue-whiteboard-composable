@@ -7,11 +7,18 @@
         </h1>
         <p>A lightweight, headless Vue 3 composable for SVG-based whiteboard drawing.</p>
         <div class="links">
-          <a :href="`https://www.npmjs.com/package/${pkg.name}`" target="_blank" class="badge-link npm">
+          <a
+            :href="`https://www.npmjs.com/package/${pkg.name}`"
+            target="_blank"
+            class="badge-link npm"
+          >
             NPM
           </a>
-          <a :href="pkg.repository.url.replace('git+', '').replace('.git', '')" target="_blank"
-            class="badge-link github">
+          <a
+            :href="pkg.repository.url.replace('git+', '').replace('.git', '')"
+            target="_blank"
+            class="badge-link github"
+          >
             GitHub
           </a>
         </div>
@@ -21,28 +28,57 @@
     <main class="workspace">
       <div class="whiteboard-wrapper">
         <div class="canvas-area">
-          <svg @mouseenter="isHovering = true" @mouseleave="isHovering = false" @mousemove="handleMouseMove" ref="svgRef"
-            class="whiteboard" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
-          </svg>
+          <svg
+            @mouseenter="isHovering = true"
+            @mouseleave="isHovering = false"
+            @mousemove="handleMouseMove"
+            ref="svgRef"
+            class="whiteboard"
+            viewBox="0 0 800 600"
+            preserveAspectRatio="xMidYMid meet"
+          ></svg>
           <svg class="cursor-overlay" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
-            <circle v-if="isHovering" :cx="mouseX" :cy="mouseY" :r="parseInt(size) / 2" :fill="color"
-              stroke="rgba(0,0,0,0.1)" stroke-width="0.5" />
+            <circle
+              v-if="isHovering"
+              :cx="mouseX"
+              :cy="mouseY"
+              :r="parseInt(size) / 2"
+              :fill="color"
+              stroke="rgba(0,0,0,0.1)"
+              stroke-width="0.5"
+            />
           </svg>
         </div>
 
         <div class="toolbar">
           <div class="color-picker" role="group" aria-label="Color Palette">
-            <button v-for="c in colors" :key="c.value" class="color-btn" :class="{ active: color === c.value }"
-              :style="{ backgroundColor: c.value }" @click="color = c.value" :aria-label="c.name"
-              :title="c.name"></button>
+            <button
+              v-for="c in colors"
+              :key="c.value"
+              class="color-btn"
+              :class="{ active: color === c.value }"
+              :style="{ backgroundColor: c.value }"
+              @click="color = c.value"
+              :aria-label="c.name"
+              :title="c.name"
+            ></button>
           </div>
 
           <div class="separator"></div>
 
           <div class="size-picker" role="group" aria-label="Brush Size">
-            <button v-for="s in sizes" :key="s.value" class="size-btn" :class="{ active: size === s.value }"
-              @click="size = s.value" :title="s.name">
-              <div class="size-preview" :style="{ width: s.previewSize + 'px', height: s.previewSize + 'px' }"></div>
+            <button
+              v-for="s in sizes"
+              :key="s.value"
+              class="size-btn"
+              :class="{ active: size === s.value }"
+              @click="size = s.value"
+              :title="s.name"
+            >
+              <div
+                class="size-preview"
+                :style="{ width: s.previewSize + 'px', height: s.previewSize + 'px' }"
+              ></div>
             </button>
           </div>
 
@@ -50,22 +86,49 @@
 
           <div class="actions">
             <button class="icon-btn" @click="undo" :disabled="!canUndo" title="Undo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="M3 7v6h6" />
                 <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
               </svg>
             </button>
             <button class="icon-btn" @click="redo" :disabled="!canRedo" title="Redo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="M21 7v6h-6" />
                 <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
               </svg>
             </button>
             <button class="icon-btn primary" @click="saveImage" title="Save Image">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
                 <polyline points="17 21 17 13 7 13 7 21" />
                 <polyline points="7 3 7 8 15 8" />
@@ -81,9 +144,23 @@
             <h3>History</h3>
             <span class="badge">{{ history.length }}</span>
           </div>
-          <button class="icon-btn sm danger" @click="clear" title="Clear Board" :disabled="history.length === 0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button
+            class="icon-btn sm danger"
+            @click="clear"
+            title="Clear Board"
+            :disabled="history.length === 0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <path d="M3 6h18" />
               <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
               <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
@@ -93,8 +170,17 @@
         <div class="history-list">
           <div class="history-item" :class="{ active: currentIndex === -1 }" @click="jumpTo(-1)">
             <div class="history-icon start">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <circle cx="12" cy="12" r="10"></circle>
               </svg>
             </div>
@@ -102,19 +188,37 @@
               <span class="history-type">Empty Canvas</span>
             </div>
           </div>
-          <div v-for="(item, index) in history" :key="item.id" class="history-item"
-            :class="{ active: index === currentIndex }" @click="jumpTo(index)" @mouseenter="highlightRecord(index)"
-            @mouseleave="unhighlightRecord(index)">
+          <div
+            v-for="(item, index) in history"
+            :key="item.id"
+            class="history-item"
+            :class="{ active: index === currentIndex }"
+            @click="jumpTo(index)"
+            @mouseenter="highlightRecord(index)"
+            @mouseleave="unhighlightRecord(index)"
+          >
             <div class="history-icon draw">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="m18 15-6-6-6 6" />
               </svg>
             </div>
             <div class="history-content">
               <div class="history-title">
-                <span class="history-meta" :style="{ backgroundColor: item.brush.color }"
-                  :title="'Color: ' + item.brush.color"></span>
+                <span
+                  class="history-meta"
+                  :style="{ backgroundColor: item.brush.color }"
+                  :title="'Color: ' + item.brush.color"
+                ></span>
                 <span class="history-type capitalize">{{ item.type }}</span>
               </div>
               <span class="history-time">
@@ -122,9 +226,22 @@
                 <span> · {{ item.brush.size }}</span>
               </span>
             </div>
-            <button class="history-delete-btn" @click.stop="removeFromHistory(index)" title="Remove item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <button
+              class="history-delete-btn"
+              @click.stop="removeFromHistory(index)"
+              title="Remove item"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
@@ -393,6 +510,7 @@ body {
 
 .workspace {
   display: flex;
+  width: 100%;
   gap: 24px;
 }
 
@@ -896,7 +1014,7 @@ body {
 
 /* Footer & Features */
 .footer {
-  margin-top: 60px;
+  margin-top: 24px;
   text-align: center;
 }
 
@@ -909,16 +1027,17 @@ body {
 
 .feature-card {
   background: white;
+  border-radius: 16px;
+  box-shadow:
+    0 10px 40px -10px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
   padding: 24px;
-  border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
   text-align: left;
   transition: transform 0.2s;
 }
 
 .feature-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
 }
 
 .feature-card h3 {
