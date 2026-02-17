@@ -28,11 +28,25 @@
     <main class="workspace">
       <div class="whiteboard-wrapper">
         <svg
+          @mouseenter="isHovering = true"
+          @mouseleave="isHovering = false"
+          @mousemove="handleMouseMove"
           ref="svgRef"
           class="whiteboard"
           viewBox="0 0 800 600"
           preserveAspectRatio="xMidYMid meet"
-        ></svg>
+        >
+          <circle
+            v-if="isHovering"
+            :cx="mouseX"
+            :cy="mouseY"
+            :r="parseInt(size) / 2"
+            :fill="color"
+            stroke="rgba(0,0,0,0.1)"
+            stroke-width="0.5"
+            style="pointer-events: none"
+          />
+        </svg>
 
         <div class="toolbar">
           <div class="color-picker" role="group" aria-label="Color Palette">
@@ -199,7 +213,6 @@
             <div class="history-content">
               <div class="history-title">
                 <span
-                  v-if="item.options"
                   class="history-meta"
                   :style="{ backgroundColor: item.options.color }"
                   :title="'Color: ' + item.options.color"
@@ -208,7 +221,7 @@
               </div>
               <span class="history-time">
                 {{ formatTime(item.timestamp) }}
-                <span v-if="item.options"> · {{ item.options.size }}</span>
+                <span> · {{ item.options.size }}</span>
               </span>
             </div>
             <button
@@ -301,6 +314,9 @@ const color = ref('#212121')
 const size = ref('4px')
 const image = ref<string | undefined>(undefined)
 const svgRef = ref<SVGSVGElement | null>(null)
+const mouseX = ref(0)
+const mouseY = ref(0)
+const isHovering = ref(false)
 
 const sizes = [
   { name: 'Thin', value: '2px', previewSize: 4 },
@@ -349,6 +365,20 @@ watch(
   },
   { deep: true },
 )
+
+const handleMouseMove = (e: MouseEvent) => {
+  if (!svgRef.value) return
+  const svg = svgRef.value
+  const point = svg.createSVGPoint()
+  point.x = e.clientX
+  point.y = e.clientY
+  const ctm = svg.getScreenCTM()
+  if (ctm) {
+    const svgPoint = point.matrixTransform(ctm.inverse())
+    mouseX.value = svgPoint.x
+    mouseY.value = svgPoint.y
+  }
+}
 
 const highlightRecord = (index: number) => {
   const record = history.value[index]
@@ -499,7 +529,7 @@ body {
   max-width: 800px;
   height: 100%;
   touch-action: none;
-  cursor: crosshair;
+  cursor: none;
   background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
   background-size: 20px 20px;
   display: block;
