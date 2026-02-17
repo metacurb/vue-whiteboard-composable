@@ -1,10 +1,18 @@
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 
 /** Brush line cap styles. */
 export type LineCap = 'butt' | 'square' | 'round'
 
 /** Brush line join styles. */
 export type LineJoin = 'miter' | 'round' | 'bevel' | 'miter-clip' | 'arcs'
+
+/** Brush settings object. */
+export interface Brush {
+  /** The color of the stroke. */
+  color: string
+  /** The size/width of the stroke. */
+  size: string
+}
 
 /** Configuration options for the useWhiteboard composable. */
 export interface WhiteboardOptions {
@@ -37,16 +45,11 @@ export interface HistoryRecord {
   /** The SVG path element rendered on the canvas. */
   data: SVGElement
   /** The brush settings (color, size) used at the time of drawing. */
-  brush: {
-    /** The color of the stroke. */
-    color: string
-    /** The size/width of the stroke. */
-    size: string
-  }
+  brush: Brush
 }
 
 /** A JSON-serializable version of a drawing record for persistence. */
-export interface SerializableRecord {
+export type SerializableRecord = {
   /** Unique identifier of the original record. */
   id: string
   /** The type of mark. */
@@ -56,12 +59,33 @@ export interface SerializableRecord {
   /** The SVG path data ('d' attribute). */
   pathData: string
   /** The brush settings used when this mark was created. */
-  brush: {
-    /** The color of the stroke. */
-    color: string
-    /** The size/width of the stroke. */
-    size: string
-  }
+  brush: Brush
+}
+
+/** Return type of the useWhiteboard composable. */
+export interface UseWhiteboardReturn {
+  /** Undoes the last drawing action. */
+  undo: () => void
+  /** Redoes the last undone drawing action. */
+  redo: () => void
+  /** Clears the entire canvas and resets history. */
+  clear: () => void
+  /** Exports the current whiteboard state as a PNG data URL. */
+  save: () => Promise<string | undefined>
+  /** Removes a specific record from history by index and removes its element from SVG. */
+  removeFromHistory: (index: number) => void
+  /** Reactive boolean indicating if undo is possible. */
+  canUndo: ComputedRef<boolean>
+  /** Reactive boolean indicating if redo is possible. */
+  canRedo: ComputedRef<boolean>
+  /** Reactive array containing all history records. */
+  history: Ref<HistoryRecord[]>
+  /** The current index in history. -1 means empty, 0 is the first record. */
+  currentIndex: Ref<number>
+  /** Navigates to a specific point in history by replaying actions. */
+  jumpTo: (index: number) => void
+  /** Serializes the current history into a JSON-compatible format. */
+  serialize: () => SerializableRecord[]
 }
 
 /** Default configuration values for the whiteboard. */

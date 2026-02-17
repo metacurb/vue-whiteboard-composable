@@ -6,15 +6,21 @@ import {
   WHITEBOARD_DEFAULTS,
   type HistoryRecord,
   type SerializableRecord,
+  type UseWhiteboardReturn,
   type WhiteboardOptions,
 } from '@/types/whiteboard'
 
-export { type HistoryRecord, type SerializableRecord, type WhiteboardOptions }
+export {
+  type HistoryRecord,
+  type SerializableRecord,
+  type UseWhiteboardReturn,
+  type WhiteboardOptions,
+}
 
 export function useWhiteboard(
   containerRef: Ref<SVGSVGElement | null>,
   options: WhiteboardOptions = {},
-) {
+): UseWhiteboardReturn {
   const d3Line = line().curve(curveBasis)
 
   const history = ref<HistoryRecord[]>([])
