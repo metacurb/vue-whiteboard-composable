@@ -91,9 +91,9 @@
               </div>
               <div class="history-content">
                 <div class="history-title">
-                  <span class="history-type capitalize">{{ item.type }}</span>
                   <span v-if="item.options" class="history-meta" :style="{ backgroundColor: item.options.color }"
                     :title="'Color: ' + item.options.color"></span>
+                  <span class="history-type capitalize">{{ item.type }}</span>
                 </div>
                 <span class="history-time">
                   {{ formatTime(item.timestamp) }}
