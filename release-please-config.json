@@ -4,9 +4,9 @@
   "draft": true,
   "draft-pull-request": true,
   "force-tag-creation": true,
+  "include-component-in-tag": false,
   "packages": {
     ".": {
-      "package-name": "vue-whiteboard-composable",
       "include-v-in-tag": true,
       "changelog-sections": [
         {
