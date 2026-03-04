@@ -10,6 +10,9 @@ type HarnessResult = ReturnType<typeof render> & {
   svg: SVGSVGElement
 }
 
+const HARNESS_WIDTH = 320
+const HARNESS_HEIGHT = 200
+
 const createHarness = async (options: WhiteboardOptions = {}): Promise<HarnessResult> => {
   let api!: UseWhiteboardReturn
 
@@ -22,8 +25,8 @@ const createHarness = async (options: WhiteboardOptions = {}): Promise<HarnessRe
         h('svg', {
           ref: containerRef,
           'data-testid': 'whiteboard',
-          width: 320,
-          height: 200,
+          width: HARNESS_WIDTH,
+          height: HARNESS_HEIGHT,
         })
     },
   })
@@ -37,12 +40,12 @@ const createHarness = async (options: WhiteboardOptions = {}): Promise<HarnessRe
 
   Object.defineProperty(svg, 'clientWidth', {
     configurable: true,
-    value: 320,
+    value: HARNESS_WIDTH,
   })
 
   Object.defineProperty(svg, 'clientHeight', {
     configurable: true,
-    value: 200,
+    value: HARNESS_HEIGHT,
   })
 
   Object.defineProperty(svg, 'getBoundingClientRect', {
@@ -52,10 +55,10 @@ const createHarness = async (options: WhiteboardOptions = {}): Promise<HarnessRe
       y: 0,
       top: 0,
       left: 0,
-      right: 320,
-      bottom: 200,
-      width: 320,
-      height: 200,
+      right: HARNESS_WIDTH,
+      bottom: HARNESS_HEIGHT,
+      width: HARNESS_WIDTH,
+      height: HARNESS_HEIGHT,
       toJSON: () => '',
     }),
   })
@@ -259,6 +262,7 @@ describe('useWhiteboard', () => {
   })
 
   it('serializes and exports the rendered board', async () => {
+    const exportScale = 2
     const drawImage = vi.fn()
     const clearRect = vi.fn()
 
@@ -297,7 +301,7 @@ describe('useWhiteboard', () => {
       ],
       linecap: 'square',
       linejoin: 'bevel',
-      exportScale: 2,
+      exportScale,
     })
 
     const serialized = api.serialize()
@@ -310,7 +314,12 @@ describe('useWhiteboard', () => {
     })
     expect(serialized[0]?.pathData).toBeTruthy()
     expect(exported).toBe('data:image/png;base64,mock')
-    expect(clearRect).toHaveBeenCalledWith(0, 0, 640, 400)
+    expect(clearRect).toHaveBeenCalledWith(
+      0,
+      0,
+      HARNESS_WIDTH * exportScale,
+      HARNESS_HEIGHT * exportScale,
+    )
     expect(drawImage).toHaveBeenCalled()
   })
 })
