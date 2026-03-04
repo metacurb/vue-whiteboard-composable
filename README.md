@@ -1,5 +1,11 @@
 # vue-whiteboard-composable
 
+[![npm version](https://img.shields.io/npm/v/vue-whiteboard-composable?style=for-the-badge)](https://www.npmjs.com/package/vue-whiteboard-composable)
+[![CI](https://img.shields.io/github/actions/workflow/status/metacurb/vue-whiteboard-composable/ci.yml?branch=main&label=CI&style=for-the-badge)](https://github.com/metacurb/vue-whiteboard-composable/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/actions/workflow/status/metacurb/vue-whiteboard-composable/release-please.yml?branch=main&label=Release&style=for-the-badge)](https://github.com/metacurb/vue-whiteboard-composable/actions/workflows/release-please.yml)
+[![license](https://img.shields.io/github/license/metacurb/vue-whiteboard-composable?style=for-the-badge)](./LICENSE)
+[![demo](https://img.shields.io/badge/demo-live-0f766e?style=for-the-badge)](https://metacurb.github.io/vue-whiteboard-composable/)
+
 A **Vue 3 composable** for canvas-style drawing on an SVG. Built with Vue 3 and [d3](https://d3js.org/), inspired by [ng-whiteboard](https://github.com/mostafazke/ng-whiteboard).
 
 [**Live Demo**](https://metacurb.github.io/vue-whiteboard-composable/)
@@ -30,7 +36,7 @@ npm i vue-whiteboard-composable
 If you'd like to try out the demo app locally, you can clone the repository and run the development server:
 
 ```bash
-git clone https://github.com/opista/vue-whiteboard-composable.git
+git clone https://github.com/metacurb/vue-whiteboard-composable.git
 cd vue-whiteboard-composable
 pnpm install
 pnpm dev
