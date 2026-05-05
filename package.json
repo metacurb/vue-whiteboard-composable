@@ -40,6 +40,7 @@
     "d3": "^7.9.0"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.58.7",
     "@testing-library/vue": "^8.1.0",
     "@tsconfig/node24": "^24.0.4",
     "@types/d3": "^7.4.3",
@@ -61,7 +62,7 @@
     "prettier": "3.8.1",
     "typescript": "~5.9.3",
     "vite": "^7.3.1",
-    "vite-plugin-dts": "^5.0.0",
+    "unplugin-dts": "^1.0.0",
     "vite-plugin-vue-devtools": "^8.0.6",
     "vitest": "^4.0.18",
     "vue-tsc": "^3.2.4"
