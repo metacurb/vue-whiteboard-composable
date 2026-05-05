@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
-import dts from 'vite-plugin-dts'
+import dts from 'unplugin-dts/vite'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -16,7 +16,7 @@ export default defineConfig(({ command }) => ({
     vueJsx(),
     vueDevTools(),
     ...(command === 'build'
-      ? [dts({ outDir: 'dist', tsconfigPath: './tsconfig.app.json', rollupTypes: true })]
+      ? [dts({ outDirs: 'dist', tsconfigPath: './tsconfig.app.json', bundleTypes: true })]
       : []),
   ],
   resolve: {
