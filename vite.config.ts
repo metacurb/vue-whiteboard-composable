@@ -16,7 +16,18 @@ export default defineConfig(({ command }) => ({
     vueJsx(),
     vueDevTools(),
     ...(command === 'build'
-      ? [dts({ outDirs: 'dist', tsconfigPath: './tsconfig.app.json', bundleTypes: true })]
+      ? [
+          dts({
+            outDirs: 'dist',
+            tsconfigPath: './tsconfig.app.json',
+            bundleTypes: {
+              invokeOptions: {
+                // Use API Extractor's matching TypeScript library files.
+                typescriptCompilerFolder: undefined,
+              },
+            },
+          }),
+        ]
       : []),
   ],
   resolve: {
